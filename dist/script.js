@@ -13748,6 +13748,217 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./src/js/modules/images.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/images.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function images() {
+  const imgPopup = document.createElement('div'),
+    workSection = document.querySelector('.works'),
+    bigImage = document.createElement('img');
+  imgPopup.classList.add('popup');
+  workSection.appendChild(imgPopup);
+  imgPopup.style.justifyContent = 'center';
+  imgPopup.style.alignItems = 'center';
+  imgPopup.style.display = 'none';
+  imgPopup.appendChild(bigImage);
+  workSection.addEventListener('click', e => {
+    e.preventDefault();
+    const target = e.target;
+    if (target && target.classList.contains('preview')) {
+      imgPopup.style.display = 'flex';
+      const path = target.parentNode.getAttribute('href');
+      bigImage.setAttribute('src', path);
+    }
+    if (target && target.matches('div.popup')) {
+      imgPopup.style.display = 'none';
+    }
+  });
+}
+;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (images);
+
+/***/ }),
+
+/***/ "./src/js/modules/modals.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/modals.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const modals = () => {
+  function bind(triggerSelector, modalSelector, closeSelector, closeClockOverlay = true) {
+    const trigger = document.querySelectorAll(triggerSelector),
+      modal = document.querySelector(modalSelector),
+      close = document.querySelector(closeSelector),
+      windows = document.querySelectorAll('[data-modal]');
+    trigger.forEach(item => {
+      item.addEventListener('click', e => {
+        if (e.target) {
+          e.preventDefault();
+        }
+        windows.forEach(item => {
+          item.style.display = 'none';
+        });
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    close.addEventListener('click', () => {
+      windows.forEach(item => {
+        item.style.display = 'none';
+      });
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+      clearTimeout(openModalTimer);
+    });
+    modal.addEventListener('click', e => {
+      if (e.target === modal && closeClockOverlay) {
+        windows.forEach(item => {
+          item.style.display = 'none';
+        });
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        clearTimeout(openModalTimer);
+      }
+    });
+    document.addEventListener('keydown', () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    });
+  }
+  function openModalTimer(selector, time) {
+    setTimeout(function () {
+      document.querySelector(selector).style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }, time);
+  }
+  bind('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
+  bind('.phone_link', '.popup', '.popup .popup_close');
+  bind('.popup_calc_btn', '.popup_calc', '.popup_calc_close');
+  bind('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
+  bind('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
+  // openModalTimer('.popup', 60000);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/tabs.js":
+/*!********************************!*\
+  !*** ./src/js/modules/tabs.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const tabs = (headerSelector, tabSelector, contentSelector, activeClass) => {
+  const header = document.querySelector(headerSelector),
+    tab = document.querySelectorAll(tabSelector),
+    content = document.querySelectorAll(contentSelector);
+  function hideTabContent() {
+    content.forEach(item => {
+      item.style.display = 'none';
+    });
+    tab.forEach(item => {
+      item.classList.remove(activeClass);
+    });
+  }
+  function showTabContent(i = 0) {
+    content[i].style.display = 'block';
+    tab[i].classList.add(activeClass);
+  }
+  hideTabContent();
+  showTabContent();
+  header.addEventListener('click', e => {
+    const target = e.target;
+    if (target.classList.contains(tabSelector.replace(/\./, "")) || target.parentNode.classList.contains(tabSelector.replace(/\./, ""))) {
+      tab.forEach((item, i) => {
+        if (target == item || target.parentNode == item) {
+          hideTabContent();
+          showTabContent(i);
+        }
+      });
+    }
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function timer(selector, endtime) {
+  function getTimeRemaining(endtime) {
+    const t = Date.parse(endtime) - Date.parse(new Date()),
+      days = Math.floor(t / (1000 * 60 * 60 * 24)),
+      hours = Math.floor(t / (1000 * 60 * 60) % 24),
+      minutes = Math.floor(t / 1000 / 60 % 60),
+      seconds = Math.floor(t / 1000 % 60);
+    return {
+      'total': t,
+      'days': days,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds
+    };
+  }
+  function getZero(num) {
+    if (num >= 0 && num < 10) {
+      return `0${num}`; // если число однозначное, то добавляется 0( 01, 02 и тд)
+    } else {
+      return num;
+    }
+  }
+  function setClock(selector, endtime) {
+    const timer = document.querySelector(selector),
+      days = timer.querySelector('#days'),
+      hours = timer.querySelector('#hours'),
+      minutes = timer.querySelector('#minutes'),
+      seconds = timer.querySelector('#seconds'),
+      timeInterval = setInterval(updateClock, 1000);
+    updateClock();
+    function updateClock() {
+      const t = getTimeRemaining(endtime);
+      days.innerHTML = getZero(t.days);
+      hours.innerHTML = getZero(t.hours);
+      minutes.innerHTML = getZero(t.minutes);
+      seconds.innerHTML = getZero(t.seconds);
+      if (t.total <= 0) {
+        clearInterval(timeInterval);
+      }
+    }
+  }
+  setClock(selector, endtime);
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (timer);
+
+/***/ }),
+
 /***/ "./src/js/slider.js":
 /*!**************************!*\
   !*** ./src/js/slider.js ***!
@@ -13912,242 +14123,24 @@ var __webpack_exports__ = {};
   \************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./slider */ "./src/js/slider.js");
+/* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_images__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/images */ "./src/js/modules/images.js");
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  const modalEngineer = document.querySelector('.popup_engineer'),
-    //модалка вызова замерщика
-    modalCloseBtn = document.querySelectorAll('.popup_close'),
-    // кнопка закрытия модалки
-    requestEngineerBtn = document.querySelector('.header_btn'),
-    // кнопка вызова модалки "Вызов замерщика"
-    modalCallback = document.querySelector('.popup'),
-    // Модалка обратного звонка
-    userCallbackBtn = document.querySelectorAll('.phone_link'),
-    //Кнопка вызова модалки обратного звонка
-    glazingPriceBtn = document.querySelectorAll('.glazing_price_btn '),
-    //Кнопка открытия модалки рассчела стоимости
-    modalCalc = document.querySelector('.popup_calc'),
-    // модалка рассчета стоимости
-    balconImg = document.querySelectorAll('.big_img img'),
-    // картинки окон
-    balconIconsImg = document.querySelectorAll('.balcon_icons_img'),
-    // иконки окон
-    modalCalcProfile = document.querySelector('.popup_calc_profile'),
-    // модалка калькулятора остекления
-    modalCalcEnd = document.querySelector('.popup_calc_end'),
-    // модалка калькулятора - конец
-    modalCalcNewBtn = document.querySelectorAll('.popup_calc_button'),
-    // кнопка Далее у калькулятора
-    glazingSliderTabs = document.querySelectorAll('.glazing_block'),
-    glazingTabLinks = document.querySelectorAll('.glazing_block a'),
-    glazingTree = document.querySelectorAll('.glazing_content'),
-    decorationTabs = document.querySelectorAll('.internal_link'),
-    decorationTabContent = document.querySelectorAll('.interior_tab');
-  function openModal(selector) {
-    selector.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(selector) {
-    selector.classList.add('hide');
-    selector.classList.remove('show');
-    document.body.style.overflow = '';
-  }
 
-  //открытие модалки на "Заказать обратный звонок" и " Спросите у нашего специалиста!"
 
-  userCallbackBtn.forEach(e => {
-    e.addEventListener('click', () => {
-      openModal(modalCallback);
-    });
-  });
 
-  // закрытие на ESC 
-  document.addEventListener('keydown', e => {
-    if (e.code == 'Escape' && modalEngineer.classList.contains('show')) {
-      closeModal(modalEngineer);
-    } else if (e.code == 'Escape' && modalCallback.classList.contains('show')) {
-      closeModal(modalCallback);
-      clearInterval(modalTimer);
-    } else if (e.code == 'Escape' && modalCalc.classList.contains('show')) {
-      closeModal(modalCalc);
-    }
-  });
 
-  //открытие модалки на кнопку "Вызвать замерщика"
-
-  requestEngineerBtn.addEventListener('click', () => {
-    openModal(modalEngineer);
-  });
-
-  //закрытие на крестик модалок
-
-  modalCloseBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.classList.contains('popup_callback_close')) {
-        closeModal(modalCallback);
-        clearInterval(modalTimer);
-      } else if (btn.classList.contains('popup_engineer_close')) {
-        closeModal(modalEngineer);
-      } else if (btn.classList.contains('popup_calc_close')) {
-        closeModal(modalCalc);
-      } else if (btn.classList.contains('popup_calc_profile_close')) {
-        closeModal(modalCalcProfile);
-      } else {
-        closeModal(modalCalcEnd);
-      }
-    });
-  });
-
-  //закрытие на подложку
-
-  document.addEventListener('click', e => {
-    if (e.target === modalEngineer) {
-      closeModal(modalEngineer);
-    } else if (e.target === modalCallback) {
-      closeModal(modalCallback);
-      clearInterval(modalTimer);
-    } else if (e.target === modalCalc) {
-      closeModal(modalCalc);
-    }
-  });
-
-  //открытие модалки рассчета стоимости
-
-  glazingPriceBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-      openModal(modalCalc);
-    });
-  });
-
-  //открытие модалки спустя 60 секунд
-
-  const modalTimer = setInterval(() => {
-    openModal(modalCallback);
-  }, 20000);
-
-  //открытие модалки рассчета стоимости
-
-  function showFormOfBalconTab(i = 0) {
-    balconIconsImg[i].classList.add('do_image_more');
-    balconImg[i].style.display = 'block';
-  }
-  function hideFormOfBalconTab() {
-    balconIconsImg.forEach(item => {
-      item.classList.remove('do_image_more');
-    });
-    balconImg.forEach(item => {
-      item.style.display = 'none';
-    });
-  }
-  balconIconsImg.forEach((item, i) => {
-    item.addEventListener('click', () => {
-      hideFormOfBalconTab();
-      showFormOfBalconTab(i);
-    });
-  });
-  // открытие модалки на кнопку ДАЛЕЕ
-  modalCalcNewBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-      closeModal(modalCalc);
-      openModal(modalCalcProfile);
-      if (btn.classList.contains('popup_calc_profile_button')) {
-        closeModal(modalCalcProfile);
-        openModal(modalCalcEnd);
-      }
-    });
-  });
-  // смена слайдера остекления
-
-  function showGlazingTab(i = 0) {
-    glazingTree[i].style.display = 'block';
-    glazingTabLinks[i].classList.add('active');
-  }
-  function hideGlazingTab() {
-    glazingTree.forEach(item => {
-      item.style.display = 'none';
-    });
-    glazingTabLinks.forEach(item => {
-      item.classList.remove('active');
-    });
-  }
-  glazingSliderTabs.forEach((item, i) => {
-    item.addEventListener('click', () => {
-      hideGlazingTab();
-      showGlazingTab(i);
-    });
-  });
-
-  // слайдер отделки
-
-  function showInterior(i = 0) {
-    decorationTabContent[i].style.display = 'block';
-    decorationTabs[i].classList.add('after_click');
-  }
-  function hideInterior() {
-    decorationTabContent.forEach(item => {
-      item.style.display = 'none';
-    });
-    decorationTabs.forEach(item => {
-      item.classList.remove('after_click');
-    });
-  }
-  decorationTabs.forEach((btn, i) => {
-    btn.addEventListener('click', () => {
-      hideInterior();
-      showInterior(i);
-    });
-  });
-  const deadline = '2025-07-01';
-  function getTimeRemaining(endtime) {
-    const t = Date.parse(endtime) - Date.parse(new Date()),
-      days = Math.floor(t / (1000 * 60 * 60 * 24)),
-      hours = Math.floor(t / (1000 * 60 * 60) % 24),
-      minutes = Math.floor(t / 1000 / 60 % 60),
-      seconds = Math.floor(t / 1000 % 60);
-    return {
-      'total': t,
-      'days': days,
-      'hours': hours,
-      'minutes': minutes,
-      'seconds': seconds
-    };
-  }
-  function getZero(num) {
-    if (num >= 0 && num < 10) {
-      return `0${num}`; // если число однозначное, то добавляется 0( 01, 02 и тд)
-    } else {
-      return num;
-    }
-  }
-  function setClock(selector, endtime) {
-    const timer = document.querySelector(selector),
-      days = timer.querySelector('#days'),
-      hours = timer.querySelector('#hours'),
-      minutes = timer.querySelector('#minutes'),
-      seconds = timer.querySelector('#seconds'),
-      timeInterval = setInterval(updateClock, 1000);
-    updateClock();
-    function updateClock() {
-      const t = getTimeRemaining(endtime);
-      days.innerHTML = getZero(t.days);
-      hours.innerHTML = getZero(t.hours);
-      minutes.innerHTML = getZero(t.minutes);
-      seconds.innerHTML = getZero(t.seconds);
-      if (t.total <= 0) {
-        clearInterval(timeInterval);
-      }
-    }
-  }
-
-  //вызовы функций
-  showFormOfBalconTab();
-  hideGlazingTab();
-  showGlazingTab(0);
-  showInterior(0);
-  getTimeRemaining(deadline);
-  setClock('.container1', deadline);
+window.addEventListener('DOMContentLoaded', () => {
+  (0,_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click');
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img img', 'do_image_more');
+  (0,_modules_timer__WEBPACK_IMPORTED_MODULE_3__["default"])('.container1', '2025-07-01');
+  (0,_modules_images__WEBPACK_IMPORTED_MODULE_4__["default"])();
 });
 })();
 
